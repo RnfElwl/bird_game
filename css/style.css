@@ -1,3 +1,8 @@
+* {
+  padding: 0px;
+  margin: 0px;
+}
+
 body {
   width: 100vw;
   height: 100vh;
@@ -20,4 +25,5 @@ section {
   height: 100%;
   width: 100%;
   background-color: aqua;
+  top: 50%;
 }

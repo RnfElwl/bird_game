@@ -2,24 +2,38 @@ class Bird {
   constructor() {
     this.bird = document.querySelector(".bird");
     this.map = document.querySelector(".map");
+    this.mapTop = this.map.getBoundingClientRect().y;
     this.birdTop = this.bird.getBoundingClientRect().y;
     this.isJump = false;
-    this.speed = 1.5;
-
+    this.speed = 5.5;
+    this.gameover = this.map.getBoundingClientRect().height;
+    this.time = null;
     this.event();
   }
   event() {
-    setInterval(this.setBirdTop.bind(this), 10);
+    this.time = setInterval(this.setBirdTop.bind(this), 50);
     this.map.addEventListener("click", this.handleFlyBird.bind(this));
   }
   setBirdTop() {
-    this.speed += 0.03;
-    this.birdTop += 1 + this.speed;
+    this.speed += 0.7;
+    this.birdTop += 2 + this.speed;
+    const a = this.bird.getBoundingClientRect().y - this.mapTop;
+    if (a >= this.gameover) {
+      console.log("game over");
+      this.birdTop = this.gameover - 50;
+      clearInterval(this.time);
+    }
     this.bird.style.top = this.birdTop + "px";
   }
   handleFlyBird() {
-    this.speed = 1;
-    this.birdTop -= 500 - this.speed;
-    this.bird.style.top = this.birdTop + "px";
+    this.speed = 5;
+    this.birdTop -= 400 - this.speed;
+  }
+}
+
+class Pipe {
+  constructor() {
+    this.copyPipeTop;
+    this.copyPipebottom;
   }
 }

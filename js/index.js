@@ -2,6 +2,7 @@ class Bird {
   constructor() {
     this.bird = document.querySelector(".bird");
     this.map = document.querySelector(".map");
+    this.startBtn = document.querySelector(".start");
     this.mapTop = this.map.getBoundingClientRect().y;
     this.birdTop = this.bird.getBoundingClientRect().y;
     this.isJump = false;
@@ -10,6 +11,7 @@ class Bird {
     this.time = null;
     this.event();
   }
+
   event() {
     this.time = setInterval(this.setBirdTop.bind(this), 50);
     this.map.addEventListener("click", this.handleFlyBird.bind(this));
@@ -18,9 +20,11 @@ class Bird {
     this.speed += 0.7;
     this.birdTop += 2 + this.speed;
     const a = this.bird.getBoundingClientRect().y - this.mapTop;
-    if (a >= this.gameover) {
+    if (a >= this.gameover - 50) {
       console.log("game over");
       this.birdTop = this.gameover - 50;
+      this.startBtn.style.display = "block";
+      birdTop.style.top = -100 + "%";
       clearInterval(this.time);
     }
     this.bird.style.top = this.birdTop + "px";

@@ -12,6 +12,7 @@
     <section>
       <div class="map">
         <div class="bird"></div>
+        <div class="start">START</div>
       </div>
     </section>
     <footer></footer>
@@ -21,7 +22,13 @@
     </div>
     <script src="./js/index.js"></script>
     <script>
-      new Bird();
+      const startBtn = document.querySelector(".start");
+      const birdTop = document.querySelector(".bird");
+      startBtn.addEventListener("click", () => {
+        const a = new Bird();
+        startBtn.style.display = "none";
+        birdTop.style.top = 50 + "%";
+      });
     </script>
   </body>
 </html>

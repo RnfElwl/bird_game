@@ -13,6 +13,7 @@ class Bird {
   }
 
   event() {
+    this.bird.style.transition = "top 0.5s";
     this.time = setInterval(this.setBirdTop.bind(this), 50);
     this.map.addEventListener("click", this.handleFlyBird.bind(this));
   }
@@ -24,7 +25,7 @@ class Bird {
       console.log("game over");
       this.birdTop = this.gameover - 50;
       this.startBtn.style.display = "block";
-      birdTop.style.top = -100 + "%";
+      this.bird.style.transition = "none";
       clearInterval(this.time);
     }
     this.bird.style.top = this.birdTop + "px";

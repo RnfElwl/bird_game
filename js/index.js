@@ -12,22 +12,28 @@ class Bird {
     //새관련 변수들
 
     this.pipe = null;
+    this.pipeEl = null;
     this.pipeSpeed = 100;
     this.pipeTime = Math.round(Math.random() * (5 - 3) + 3);
     this.event();
   }
 
   event() {
+    const pipes = document.querySelectorAll(".map .clone_pipe");
+    for (let i = 0; i < pipes.length; i++) {
+      pipes[i].parentNode.removeChild(pipes[i]);
+    }
+    this.setPipe();
     this.bird.style.transition = "top 0.5s";
     this.time = setInterval(this.setBirdTop.bind(this), 50);
-    setInterval(this.setPipe.bind(this), this.pipeTime * 1000);
+    this.pipe = setInterval(this.setPipe.bind(this), this.pipeTime * 1000);
     this.map.addEventListener("click", this.handleFlyBird.bind(this));
   }
   setBirdTop() {
     this.speed += 0.7;
     this.birdTop += 2 + this.speed;
-    const die = this.bird.getBoundingClientRect().y - this.mapTop;
 
+    const die = this.bird.getBoundingClientRect().y - this.mapTop;
     if (die >= this.gameover - 50) {
       console.log("game over");
       this.setGameOver();
@@ -40,10 +46,11 @@ class Bird {
     this.birdTop = this.gameover - 50;
     this.startBtn.style.display = "block";
     this.bird.style.transition = "none";
-    const pipes = document.querySelectorAll("clone_pipe");
-    pipes.forEach((element, index, arr) => {
-      console.log(element, index, arr);
-    });
+    const pipes = document.querySelectorAll(".map .clone_pipe");
+    for (let i = 0; i < pipes.length; i++) {
+      pipes[i].style.left = pipes[i].getBoundingClientRect().left + "px";
+      pipes[i].style.transition = "none";
+    }
 
     clearInterval(this.time);
     clearInterval(this.pipe);
@@ -55,7 +62,9 @@ class Bird {
   setPipe() {
     this.pipeTime = Math.round(Math.random() * (6 - 3) + 3);
     this.pipeEl = document.querySelector("body .clone_pipe").cloneNode(true);
-    this.pipeEl.style.right = 0 + "px";
+    this.pipeEl.style.transition = "right 10s linear";
+
+    this.pipeEl.style.right = -70 + "px";
     this.copyPipeTop = this.pipeEl.querySelector(".clone_pipe-top");
     this.copyPipeBottom = this.pipeEl.querySelector(".clone_pipe-bottom");
     const pipeList = document.querySelectorAll(".map .clone_pipe");

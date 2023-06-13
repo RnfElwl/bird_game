@@ -12,7 +12,7 @@ class Bird {
     //새관련 변수들
 
     this.pipe = null;
-    this.pipeSpeed = 1100;
+    this.pipeSpeed = 100;
     this.pipeTime = Math.round(Math.random() * (5 - 3) + 3);
     this.event();
   }
@@ -20,16 +20,19 @@ class Bird {
   event() {
     this.bird.style.transition = "top 0.5s";
     this.time = setInterval(this.setBirdTop.bind(this), 50);
-    this.pipe = setInterval(this.setPipe.bind(this), this.pipeTime * 1000);
+    setInterval(this.setPipe.bind(this), this.pipeTime * 1000);
     this.map.addEventListener("click", this.handleFlyBird.bind(this));
   }
   setBirdTop() {
     this.speed += 0.7;
     this.birdTop += 2 + this.speed;
     const die = this.bird.getBoundingClientRect().y - this.mapTop;
+
     if (die >= this.gameover - 50) {
       console.log("game over");
       this.setGameOver();
+    } else if (die < 0) {
+      this.birdTop = 50;
     }
     this.bird.style.top = this.birdTop + "px";
   }
@@ -37,6 +40,11 @@ class Bird {
     this.birdTop = this.gameover - 50;
     this.startBtn.style.display = "block";
     this.bird.style.transition = "none";
+    const pipes = document.querySelectorAll("clone_pipe");
+    pipes.forEach((element, index, arr) => {
+      console.log(element, index, arr);
+    });
+
     clearInterval(this.time);
     clearInterval(this.pipe);
   }
@@ -45,24 +53,19 @@ class Bird {
     this.birdTop -= 400 - this.speed;
   }
   setPipe() {
-    console.log("hi");
-    this.pipeTime = Math.round(Math.random() * (5 - 3) + 3);
-    this.pipeEl = document.querySelector(".clone_pipe").cloneNode();
-    this.copyPipeTop = document.querySelector(".clone_pipe-top").cloneNode();
-    this.copyPipeBottom = document
-      .querySelector(".clone_pipe-bottom")
-      .cloneNode();
+    this.pipeTime = Math.round(Math.random() * (6 - 3) + 3);
+    this.pipeEl = document.querySelector("body .clone_pipe").cloneNode(true);
+    this.pipeEl.style.right = 0 + "px";
+    this.copyPipeTop = this.pipeEl.querySelector(".clone_pipe-top");
+    this.copyPipeBottom = this.pipeEl.querySelector(".clone_pipe-bottom");
     const pipeList = document.querySelectorAll(".map .clone_pipe");
-    console.log(pipeList);
     if (pipeList.length >= 3) {
       const firstNode = pipeList[0];
       firstNode.parentNode.removeChild(firstNode);
     }
-    this.copyPipeTop.style.height = 70 + "px";
-    this.copyPipeBottom.style.height = 70 + "px";
-    this.pipeEl.appendChild(this.copyPipeTop);
-    this.pipeEl.appendChild(this.copyPipeBottom);
     this.map.appendChild(this.pipeEl);
-    this.pipeEl.style.right = this.pipeSpeed + "px";
+    setTimeout(() => {
+      this.pipeEl.style.right = this.pipeSpeed + "%";
+    }, 100);
   }
 }

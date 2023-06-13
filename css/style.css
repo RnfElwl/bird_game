@@ -42,7 +42,7 @@ section {
   width: 70px;
   right: -70px;
   z-index: 1;
-  transition: right 10s;
+  transition: right 10s linear;
   background-color: rgb(50, 68, 68);
 }
 .map .clone_pipe > * {

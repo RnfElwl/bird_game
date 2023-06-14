@@ -15,6 +15,8 @@ class Bird {
     this.pipeEl = null;
     this.pipeSpeed = 100;
     this.pipeTime = Math.round(Math.random() * (5 - 3) + 3);
+    this.pipeTopHeight = 0;
+    this.pipeBottomHeight = 0;
     this.event();
   }
 
@@ -67,7 +69,13 @@ class Bird {
     this.pipeEl.style.right = -70 + "px";
     this.copyPipeTop = this.pipeEl.querySelector(".clone_pipe-top");
     this.copyPipeBottom = this.pipeEl.querySelector(".clone_pipe-bottom");
+    this.pipeTopHeight = Math.round(Math.random() * 280);
+    this.pipeBottomHeight = 280 - this.pipeTopHeight;
+
+    this.copyPipeTop.style.height = this.pipeTopHeight + "px";
+    this.copyPipeBottom.style.height = this.pipeBottomHeight + "px";
     const pipeList = document.querySelectorAll(".map .clone_pipe");
+
     if (pipeList.length >= 3) {
       const firstNode = pipeList[0];
       firstNode.parentNode.removeChild(firstNode);

@@ -26,6 +26,7 @@
       const birdTop = document.querySelector(".bird");
       startBtn.addEventListener("click", () => {
         birdTop.style.top = 50 + "%";
+        birdTop.style.transition = "none";
         const a = new Bird();
         startBtn.style.display = "none";
       });

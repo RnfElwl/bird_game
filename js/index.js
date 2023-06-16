@@ -13,10 +13,11 @@ class Bird {
 
     this.pipe = null;
     this.pipeEl = null;
-    this.pipeSpeed = 100;
+    this.pipeSpeed = 110;
     this.pipeTime = Math.round(Math.random() * (5 - 3) + 3);
     this.pipeTopHeight = 0;
     this.pipeBottomHeight = 0;
+    this.comePipeIndex = 0;
     this.event();
   }
 
@@ -36,18 +37,36 @@ class Bird {
     this.birdTop += 2 + this.speed;
 
     const die = this.bird.getBoundingClientRect().y - this.mapTop;
+    const pipe = document.querySelectorAll(".map .clone_pipe");
+
     if (die >= this.gameover - 50) {
       console.log("game over");
       this.setGameOver();
     } else if (die < 0) {
       this.birdTop = 50;
+    } else if (
+      pipe[this.comePipeIndex].getBoundingClientRect().left <=
+        this.bird.getBoundingClientRect().left + 50 &&
+      pipe[this.comePipeIndex].getBoundingClientRect().left + 70 >=
+        this.bird.getBoundingClientRect().left + 50
+    ) {
+      const pipeTop = pipe[this.comePipeIndex]
+        .querySelector(".clone_pipe-top")
+        .getBoundingClientRect();
+      const pipeBottom = pipe[this.comePipeIndex]
+        .querySelector(".clone_pipe-bottom")
+        .getBoundingClientRect().top;
+      const top = this.bird.getBoundingClientRect().top;
+      console.log(top, pipeTop, pipeBottom);
+      if (top < pipeTop.top + pipeTop.height || pipeBottom < top) {
+        this.setGameOver();
+      }
     }
     this.bird.style.top = this.birdTop + "px";
   }
   setGameOver() {
     this.birdTop = this.gameover - 50;
     this.startBtn.style.display = "block";
-    this.bird.style.transition = "none";
     const pipes = document.querySelectorAll(".map .clone_pipe");
     for (let i = 0; i < pipes.length; i++) {
       pipes[i].style.left = pipes[i].getBoundingClientRect().left + "px";
@@ -69,8 +88,8 @@ class Bird {
     this.pipeEl.style.right = -70 + "px";
     this.copyPipeTop = this.pipeEl.querySelector(".clone_pipe-top");
     this.copyPipeBottom = this.pipeEl.querySelector(".clone_pipe-bottom");
-    this.pipeTopHeight = Math.round(Math.random() * 280);
-    this.pipeBottomHeight = 280 - this.pipeTopHeight;
+    this.pipeTopHeight = Math.round(Math.random() * 270);
+    this.pipeBottomHeight = 270 - this.pipeTopHeight;
 
     this.copyPipeTop.style.height = this.pipeTopHeight + "px";
     this.copyPipeBottom.style.height = this.pipeBottomHeight + "px";

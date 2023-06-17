@@ -44,24 +44,31 @@ class Bird {
       this.setGameOver();
     } else if (die < 0) {
       this.birdTop = 50;
-    } else if (
-      pipe[this.comePipeIndex].getBoundingClientRect().left <=
-        this.bird.getBoundingClientRect().left + 50 &&
-      pipe[this.comePipeIndex].getBoundingClientRect().left + 70 >=
-        this.bird.getBoundingClientRect().left + 50
-    ) {
-      const pipeTop = pipe[this.comePipeIndex]
-        .querySelector(".clone_pipe-top")
-        .getBoundingClientRect();
-      const pipeBottom = pipe[this.comePipeIndex]
-        .querySelector(".clone_pipe-bottom")
-        .getBoundingClientRect().top;
-      const top = this.bird.getBoundingClientRect().top;
-      console.log(top, pipeTop, pipeBottom);
-      if (top < pipeTop.top + pipeTop.height || pipeBottom < top) {
-        this.setGameOver();
+    }
+
+    for (let i = 0; i < pipe.length; i++) {
+      if (
+        pipe[i].getBoundingClientRect().left <=
+          this.bird.getBoundingClientRect().left + 50 &&
+        pipe[i].getBoundingClientRect().left + 70 >=
+          this.bird.getBoundingClientRect().left
+      ) {
+        const pipeTop = pipe[i]
+          .querySelector(".clone_pipe-top")
+          .getBoundingClientRect();
+        const pipeBottom = pipe[i]
+          .querySelector(".clone_pipe-bottom")
+          .getBoundingClientRect().top;
+        const top = this.bird.getBoundingClientRect().top;
+        console.log(top, pipeTop, pipeBottom);
+        if (top < pipeTop.top + pipeTop.height || pipeBottom < top) {
+          this.setGameOver();
+        }
       }
     }
+    // if(pipe[this.comePipeIndex].getBoundingClientRect().left + 70 < this.bird.getBoundingClientRect().left){
+    //   this.comePipeIndex +=
+    // }
     this.bird.style.top = this.birdTop + "px";
   }
   setGameOver() {
@@ -101,7 +108,7 @@ class Bird {
     }
     this.map.appendChild(this.pipeEl);
     setTimeout(() => {
-      this.pipeEl.style.right = this.pipeSpeed + "%";
+      this.pipeEl.style.right = this.pipeSpeed + "% ";
     }, 100);
   }
 }

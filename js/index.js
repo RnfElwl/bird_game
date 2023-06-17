@@ -18,6 +18,10 @@ class Bird {
     this.pipeTopHeight = 0;
     this.pipeBottomHeight = 0;
     this.comePipeIndex = 0;
+
+    //스코어 관련
+    this.score = 0;
+    this.scoreText = document.querySelector(".score");
     this.event();
   }
 
@@ -110,5 +114,9 @@ class Bird {
     setTimeout(() => {
       this.pipeEl.style.right = this.pipeSpeed + "% ";
     }, 100);
+    setTimeout(() => {
+      this.score += 1;
+      this.scoreText.innerText = this.score;
+    }, 9000);
   }
 }

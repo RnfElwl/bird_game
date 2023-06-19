@@ -13,15 +13,20 @@ class Bird {
 
     this.pipe = null;
     this.pipeEl = null;
-    this.pipeSpeed = 110;
+    this.pipeSpeed = window.outerWidth;
     this.pipeTime = Math.round(Math.random() * (5 - 3) + 3);
     this.pipeTopHeight = 0;
     this.pipeBottomHeight = 0;
     this.comePipeIndex = 0;
+    this.pipeNotPass = true;
 
     //스코어 관련
     this.score = 0;
+
     this.scoreText = document.querySelector(".score");
+    this.highScoreText = document.querySelector(".highScore");
+    this.highScore = this.highScoreText.innerText;
+    this.scoreTime = 0;
     this.event();
   }
 
@@ -50,29 +55,40 @@ class Bird {
       this.birdTop = 50;
     }
 
-    for (let i = 0; i < pipe.length; i++) {
-      if (
-        pipe[i].getBoundingClientRect().left <=
-          this.bird.getBoundingClientRect().left + 50 &&
-        pipe[i].getBoundingClientRect().left + 70 >=
-          this.bird.getBoundingClientRect().left
-      ) {
-        const pipeTop = pipe[i]
-          .querySelector(".clone_pipe-top")
-          .getBoundingClientRect();
-        const pipeBottom = pipe[i]
-          .querySelector(".clone_pipe-bottom")
-          .getBoundingClientRect().top;
-        const top = this.bird.getBoundingClientRect().top;
-        console.log(top, pipeTop, pipeBottom);
-        if (top < pipeTop.top + pipeTop.height || pipeBottom < top) {
-          this.setGameOver();
-        }
+    if (
+      pipe[this.comePipeIndex].getBoundingClientRect().left <=
+        this.bird.getBoundingClientRect().left + 50 &&
+      pipe[this.comePipeIndex].getBoundingClientRect().left + 70 >=
+        this.bird.getBoundingClientRect().left
+    ) {
+      const pipeTop = pipe[this.comePipeIndex]
+        .querySelector(".clone_pipe-top")
+        .getBoundingClientRect();
+      const pipeBottom = pipe[this.comePipeIndex]
+        .querySelector(".clone_pipe-bottom")
+        .getBoundingClientRect().top;
+      const top = this.bird.getBoundingClientRect().top;
+
+      if (top < pipeTop.top + pipeTop.height || pipeBottom < top) {
+        this.setGameOver();
       }
     }
-    // if(pipe[this.comePipeIndex].getBoundingClientRect().left + 70 < this.bird.getBoundingClientRect().left){
-    //   this.comePipeIndex +=
-    // }
+
+    if (
+      pipe[this.comePipeIndex].getBoundingClientRect().left + 70 <
+        this.bird.getBoundingClientRect().left &&
+      this.pipeNotPass
+    ) {
+      this.comePipeIndex += 1;
+      this.score += 1;
+      if (this.highScore < this.score) {
+        console.log(this.highScore, this.score);
+        this.highScore = this.score;
+        this.highScoreText.innerText = this.highScore;
+      }
+      this.scoreText.innerText = this.score;
+      this.pipeNotPass = false;
+    }
     this.bird.style.top = this.birdTop + "px";
   }
   setGameOver() {
@@ -83,6 +99,10 @@ class Bird {
       pipes[i].style.left = pipes[i].getBoundingClientRect().left + "px";
       pipes[i].style.transition = "none";
     }
+    if (this.score > this.highScore) {
+      this.highScore = this.score;
+    }
+    this.score = 0;
 
     clearInterval(this.time);
     clearInterval(this.pipe);
@@ -108,15 +128,13 @@ class Bird {
 
     if (pipeList.length >= 3) {
       const firstNode = pipeList[0];
+      this.comePipeIndex -= 1;
+      this.pipeNotPass = true;
       firstNode.parentNode.removeChild(firstNode);
     }
     this.map.appendChild(this.pipeEl);
     setTimeout(() => {
-      this.pipeEl.style.right = this.pipeSpeed + "% ";
+      this.pipeEl.style.right = this.pipeSpeed + "px";
     }, 100);
-    setTimeout(() => {
-      this.score += 1;
-      this.scoreText.innerText = this.score;
-    }, 9000);
   }
 }

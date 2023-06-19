@@ -11,6 +11,7 @@
     <header></header>
     <section>
       <h1 class="score">0</h1>
+      <h1 class="highScore">0</h1>
       <div class="map">
         <div class="bird"></div>
         <div class="start">START</div>
@@ -25,11 +26,13 @@
     <script>
       const startBtn = document.querySelector(".start");
       const birdTop = document.querySelector(".bird");
+      const score = document.querySelector(".score");
       startBtn.addEventListener("click", () => {
         birdTop.style.top = 50 + "%";
         birdTop.style.transition = "none";
         const a = new Bird();
         startBtn.style.display = "none";
+        score.innerText = "0";
       });
     </script>
   </body>

@@ -61,15 +61,16 @@ class Bird {
       pipe[this.comePipeIndex].getBoundingClientRect().left + 70 >=
         this.bird.getBoundingClientRect().left
     ) {
+      this.pipeNotPass = true;
       const pipeTop = pipe[this.comePipeIndex]
         .querySelector(".clone_pipe-top")
         .getBoundingClientRect();
       const pipeBottom = pipe[this.comePipeIndex]
         .querySelector(".clone_pipe-bottom")
         .getBoundingClientRect().top;
-      const top = this.bird.getBoundingClientRect().top;
+      const birdTop = this.bird.getBoundingClientRect().top;
 
-      if (top < pipeTop.top + pipeTop.height || pipeBottom < top) {
+      if (birdTop < pipeTop.top + pipeTop.height || pipeBottom < birdTop + 50) {
         this.setGameOver();
       }
     }
@@ -129,7 +130,6 @@ class Bird {
     if (pipeList.length >= 3) {
       const firstNode = pipeList[0];
       this.comePipeIndex -= 1;
-      this.pipeNotPass = true;
       firstNode.parentNode.removeChild(firstNode);
     }
     this.map.appendChild(this.pipeEl);
